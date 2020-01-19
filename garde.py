@@ -32,12 +32,22 @@ def main():
 
 
 def Read():
+    message = ""
     conn = sqlite3.connect("garde.db")
     c = conn.cursor()
-    c.execute("SELECT * FROM repas")
-    print(c.fetchall())
+    c.execute("SELECT * FROM repas ORDER BY date")
+    #print(c.fetchall())
+    Total = c.fetchall()
+    for i in Total:
+        message = message + str(i) +str("\n")
     conn.commit()
     conn.close()
+    message = message.replace("(", " ")
+    message = message.replace(")", " ")
+    message = message.replace("'", " ")
+    Message = message
+    Title = "Liste des repas"
+    easy.show_message(message=Message, title=Title)
 
 
 def Delete():
