@@ -5,6 +5,22 @@
 
 import easygui_qt as easy
 import sqlite3
+import sys
+
+
+def Selector():
+    choices = ["New RDV", "Read all RDV", "Delete a RDV", "New Database"]
+    reply = easy.get_choice("What is the best Python implementation", choices=choices)
+    if reply == "New Database":
+        NewDb()
+    elif reply == "New RDV":
+        main()
+    elif reply == "Read all RDV":
+        Read()
+    elif reply == "Delete a RDV":
+        Delete()
+    else:
+        sys.exit(0)
 
 
 def NewDb():
@@ -26,7 +42,7 @@ def main():
     Message = "Add to the database the " + str(date)
     Title = "Confirm write to the database"
     easy.show_message(message=Message, title=Title)
-    c.execute("INSERT INTO repas VALUES (?, ?);", (date, "Repas Shérine"))
+    c.execute("INSERT INTO repas VALUES (?, ?);", (date, "Repas Enfant"))
     conn.commit()
     conn.close()
 
@@ -47,7 +63,7 @@ def Read():
     message = message.replace("'", " ")
     Message = message
     Title = "Liste des repas"
-    easy.show_message(message=Message, title=Title)
+    easy.show_code(text=Message, title=Title)
 
 
 def Delete():
@@ -62,6 +78,4 @@ def Delete():
     conn.close()
 
 
-# Delete()
-# main()
-Read()
+Selector()
