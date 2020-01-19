@@ -2,6 +2,7 @@
 # Developer : Hamdy Abou El Anein
 # hamdy.aea@protonmail.com
 
+# To delete a value use db browser for sqlite
 
 import easygui_qt as easy
 import sqlite3
@@ -9,7 +10,7 @@ import sys
 
 
 def Selector():
-    choices = ["New RDV", "Read all RDV", "Delete a RDV", "New Database"]
+    choices = ["New RDV", "Read all RDV", "New Database"]
     reply = easy.get_choice("What is the best Python implementation", choices=choices)
     if reply == "New Database":
         NewDb()
@@ -17,8 +18,6 @@ def Selector():
         main()
     elif reply == "Read all RDV":
         Read()
-    elif reply == "Delete a RDV":
-        Delete()
     else:
         sys.exit(0)
 
@@ -66,16 +65,27 @@ def Read():
     easy.show_code(text=Message, title=Title)
 
 
+"""
 def Delete():
+    message = ""
+    datetodel = easy.get_date()
+    date = str(datetodel)
     conn = sqlite3.connect("garde.db")
     c = conn.cursor()
-    sql_delete_query = """DELETE from repas where date = '2020-01-28'"""
-    c.execute(sql_delete_query)
+    c.execute("DELETE FROM repas where date=(?);", (date))
     conn.commit()
-    c.execute("SELECT * FROM repas")
-    print(c.fetchall())
+    c.execute("SELECT * FROM repas ORDER BY date")
+    Total = c.fetchall()
+    for i in Total:
+        message = message + str(i) + str("\n")
     conn.commit()
     conn.close()
-
+    message = message.replace("(", " ")
+    message = message.replace(")", " ")
+    message = message.replace("'", " ")
+    Message = message
+    Title = "Liste des repas"
+    easy.show_code(text=Message, title=Title)
+"""
 
 Selector()
